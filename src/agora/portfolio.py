@@ -14,6 +14,9 @@ import scipy.optimize as sco
 import utils
 
 
+np.random.seed(3939)
+
+
 class Portfolio():
 
     def __init__(self, **kwargs):
@@ -171,7 +174,7 @@ class Portfolio():
         constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
 
         bounds = tuple((0, 1) for asset in range(num_assets))
-        result = sco.minimize(self.portfolio_annualised_performance, num_assets * [1./num_assets, ], args=args, method='SLSQP',
+        result = sco.minimize(self.portfolio_annualised_performance, num_assets * [1. / num_assets, ], args=args, method='SLSQP',
                               bounds=bounds, constraints=constraints)
         return result
 
@@ -226,12 +229,12 @@ class Portfolio():
         P = opt.matrix(cov)
         q = opt.matrix(np.zeros((n, 1)))
         G = opt.matrix(np.concatenate(
-            (- np.transpose(np.array(avg_ret)),  - np.identity(n)), 0))
+            (- np.transpose(np.array(avg_ret)), - np.identity(n)), 0))
         A = opt.matrix(1.0, (1, n))
         b = opt.matrix(1.0)
         opt.solvers.options['show_progress'] = False
         portfolio_weights = [solvers.qp(P, q, G, opt.matrix(np.concatenate(
-            (-np.ones((1, 1))*yy, np.zeros((n, 1))), 1)), A, b)['x'] for yy in mus]
+            (-np.ones((1, 1)) * yy, np.zeros((n, 1))), 1)), A, b)['x'] for yy in mus]
         portfolio_returns = [(np.matrix(x).T * avg_ret)[0, 0]
                              for x in portfolio_weights]
         portfolio_stdvs = [np.sqrt(
@@ -284,7 +287,7 @@ class Portfolio():
         plt.scatter(opt_std, opt_ret, marker=(5, 1, 0),
                     color='r', s=500, label='Max Sharpe ratio')
         plt.scatter(min_std, min_ret, marker=(5, 1, 0), color='g',
-                    s=500,  label='Min Volatility ratio')
+                    s=500, label='Min Volatility ratio')
 
         # 2.3 - plot Market portfolio
         # plt.scatter(STD_M, R_M, s = 200 ,  alpha = 0.4, edgecolors = "grey", linewidth = 2)
@@ -333,12 +336,12 @@ class Portfolio():
                 round(sr_arr[i], 2)), (std_arr[i] - 0.007, ret_arr[i] + 0.008), size=7.5)
 
         # 2.2 - Plot individual instruments
-        plt.scatter(x_I, y_I, s=100,  alpha=0.4,
+        plt.scatter(x_I, y_I, s=100, alpha=0.4,
                     edgecolors="grey", linewidth=2)
         for i, txt in enumerate(list(descriptive_df.index)):
             plt.annotate(txt, (x_I[i] - 0.007, y_I[i] - 0.0155), size=7.5)
             plt.annotate("SR = {}".format(round(
-                (y_I[i] - self.risk_free)/x_I[i], 2)), (x_I[i] - 0.007, y_I[i] + 0.009), size=7.5)
+                (y_I[i] - self.risk_free) / x_I[i], 2)), (x_I[i] - 0.007, y_I[i] + 0.009), size=7.5)
 
         plt.title('Initial Portfolios')
         plt.xlabel('Annualized Standard Deviation')
