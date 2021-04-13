@@ -14,7 +14,7 @@ tickers = tickers_data['Symbol'].to_frame()
 stocks_tickers = list(tickers_data.dropna(subset=['IPOyear'])['Symbol'])
 
 
-def get_ticker_historical_data(**kwargs):
+def get_ticker_historical_data(ticker, start, end):
     '''
     function:
         This function retrieves all the price data for a ticker in the following format :
@@ -28,20 +28,7 @@ def get_ticker_historical_data(**kwargs):
         [*] from_date : Date formatted as `dd/mm/yyyy`, since when data is going to be retrieved.
         [*] to_date   : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
-    # 1 - check arguments
-    if kwargs == {}:
-        if not utils.check_argv(5, "WARNING! Correct Usage: ./agora.py ticker-data <ticker> <start> <end>"):
-            return
-
-        ticker = sys.argv[2]
-        start = sys.argv[3]
-        end = sys.argv[4]
-        printing = True
-    else:
-        ticker = kwargs['ticker']
-        start = kwargs['start']
-        end = kwargs['end']
-        printing = False
+    printing = False
 
     # 2 - check parameter validity
     # TICKER
@@ -85,7 +72,7 @@ def get_ticker_historical_data(**kwargs):
     return instrument
 
 
-def get_ticker_statistics(**kwargs):
+def get_ticker_statistics(ticker, start, end):
     '''
     function:
         This function
@@ -102,25 +89,11 @@ def get_ticker_statistics(**kwargs):
         [*] end       : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
 
-    # 1 - check arguments
-    if kwargs == {}:
-        if not utils.check_argv(5, "WARNING! Correct Usage: ./agora.py ticker-statistics <ticker> <from> <to>"):
-            return
-
-        ticker = sys.argv[2]
-        start = sys.argv[3]
-        end = sys.argv[4]
-        printing = True
-    else:
-        ticker = kwargs['ticker']
-        start = kwargs['start']
-        end = kwargs['end']
-        printing = False
+    printing = False
 
     # 2
     # 2.1 - Get the data
-    instrument = get_ticker_historical_data(
-        ticker=ticker, start=start, end=end)
+    instrument = get_ticker_historical_data(ticker, start, end)
 
     # 2.2 - Calculate [*] return
     #                 [*] log return
@@ -160,7 +133,7 @@ def get_ticker_statistics(**kwargs):
     return instrument
 
 
-def get_tickers_statistics(**kwargs):
+def get_tickers_statistics(ticker_list, start, end):
     '''
     function:
         This function
@@ -179,9 +152,6 @@ def get_tickers_statistics(**kwargs):
         [*] end         : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
 
-    ticker_list = kwargs['ticker_list']
-    start = kwargs['start']
-    end = kwargs['end']
     printing = False
 
     # 2 - Retrieve Data & Calculate Descriptive statistics for each ticker:
