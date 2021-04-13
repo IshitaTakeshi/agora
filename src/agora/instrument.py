@@ -9,9 +9,11 @@ from pandas_datareader import data as web
 from datetime import datetime, date
 
 import utils
+
+
 class Instrument():
     def __init__(self, ticker, date_range):
-        self.id     = -1
+        self.id = -1
         self.ticker = ticker
 
         if date_range is not None:
@@ -22,21 +24,23 @@ class Instrument():
             # past year. Notice that the end of the time interval is
             # today, while the start is one year in the past.
             end = datetime.datetime.now().strftime("%Y-%m-%d")
-            start = (datetime.datetime.now() - datetime.timedelta(days = 365)).strftime("%Y-%m-%d")
-            self.date_range = {"start" : start, "end" : end}
+            start = (datetime.datetime.now() -
+                     datetime.timedelta(days=365)).strftime("%Y-%m-%d")
+            self.date_range = {"start": start, "end": end}
 
         try:
             self.download_data(ticker, date_range['start'], date_range['end'])
         except ValueError:
-            raise ValueError("Invalid ticker symbol specified or else there was not an internet connection available.")
+            raise ValueError(
+                "Invalid ticker symbol specified or else there was not an internet connection available.")
 
-        self.return_statistics        = {}
-        self.risk_statistics          = {}
+        self.return_statistics = {}
+        self.risk_statistics = {}
         self.risk_analysis_statistics = {}
 
-
     def download_data(self, ticker, start, end):
-        data = web.DataReader(ticker, data_source = 'yahoo', start = start, end = end)
+        data = web.DataReader(ticker, data_source='yahoo',
+                              start=start, end=end)
         self.data = data
         return
 
@@ -59,18 +63,22 @@ class Instrument():
         #                                                                     #
         #######################################################################
         statistics["returns"] = closing_prices.pct_change().dropna()
-        statistics["log_returns"] = closing_prices.apply(lambda x: np.log(x) - np.log(x.shift(1)) ).dropna()
+        statistics["log_returns"] = closing_prices.apply(
+            lambda x: np.log(x) - np.log(x.shift(1))).dropna()
 
         # [3] [*] For the expected return, we simply take the mean value of the calculated daily returns.
         #     [*] Multiply the average daily return by the length of the time series in order to
         #         obtain the expected return over the entire period.
         cummulative_return = statistics["returns"].iloc[::-1].sum().values[0]
 
-        statistics["expected_daily_return"]  = statistics["returns"].mean().values[0]
-        statistics["expected_total_return"]  = statistics["expected_daily_return"] * len(statistics["returns"])
+        statistics["expected_daily_return"] = statistics["returns"].mean().values[0]
+        statistics["expected_total_return"] = statistics["expected_daily_return"] * \
+            len(statistics["returns"])
         statistics["expected_annual_return"] = statistics["expected_daily_return"] * 252
-        statistics["APR"]                    = statistics["returns"].resample('Y').sum().mean().values[0]
-        statistics["APY"]                    = ((1 + cummulative_return)**(252 / len(statistics["returns"]) ) - 1 )
+        statistics["APR"] = statistics["returns"].resample(
+            'Y').sum().mean().values[0]
+        statistics["APY"] = ((1 + cummulative_return) **
+                             (252 / len(statistics["returns"])) - 1)
 
         self.return_statistics = statistics
         return
@@ -93,13 +101,14 @@ class Instrument():
         #                                                            #
         ##############################################################
         # standrd deviation
-        statistics["daily_std"]  = returns.std().values[0]
-        statistics["total_std"]  = statistics["daily_std"] * np.sqrt(len(returns))
+        statistics["daily_std"] = returns.std().values[0]
+        statistics["total_std"] = statistics["daily_std"] * \
+            np.sqrt(len(returns))
         statistics["annual_std"] = statistics["daily_std"] * np.sqrt(252)
 
         # variance
-        statistics["daily_var"]  = statistics["daily_std"] ** 2
-        statistics["total_var"]  = statistics["total_std"] ** 2
+        statistics["daily_var"] = statistics["daily_std"] ** 2
+        statistics["total_var"] = statistics["total_std"] ** 2
         statistics["annual_var"] = statistics["annual_std"] ** 2
 
         # statistics["annual_std"] = (returns.resample('Y').std() * np.sqrt(252)).mean().values[0]
@@ -133,14 +142,16 @@ class Instrument():
         #                [*] RF : Risk-Free
         #     Calculate return for the market
 
-        statistics["return_I"]                  = self.return_statistics['returns']
-        statistics["return_M"]                  = market["return_M"]
-        statistics["expected_annual_return_M"]  = market["expected_annual_return_M"]
-        statistics["annual_std_M"]              = market["annual_std_M"]
-        statistics["return_RF"]                 = utils.risk_free_return(date_range = self.date_range)
+        statistics["return_I"] = self.return_statistics['returns']
+        statistics["return_M"] = market["return_M"]
+        statistics["expected_annual_return_M"] = market["expected_annual_return_M"]
+        statistics["annual_std_M"] = market["annual_std_M"]
+        statistics["return_RF"] = utils.risk_free_return(
+            date_range=self.date_range)
 
         # [3] Caclulate correlation ρ_{I,M}
-        statistics["correlation"] = statistics["return_I"].corrwith(statistics["return_M"]).values[0]
+        statistics["correlation"] = statistics["return_I"].corrwith(
+            statistics["return_M"]).values[0]
 
         # [4] Caclulate alpha, beta
         ##########################################################################
@@ -152,17 +163,16 @@ class Instrument():
         #       [*] E[R_I] = Expected Annual Return of the instrument             #
         #       [*] E[R_M] = Expected Annual Return of the Market                  #
         ##########################################################################
-        R_RF    = statistics["return_RF"]
+        R_RF = statistics["return_RF"]
         corr_IM = statistics["correlation"]
-        R_I     = self.return_statistics['expected_annual_return']
-        STD_I   = self.risk_statistics['annual_std']
+        R_I = self.return_statistics['expected_annual_return']
+        STD_I = self.risk_statistics['annual_std']
 
-        R_M     = statistics["expected_annual_return_M"]
-        STD_M   = statistics["annual_std_M"]
+        R_M = statistics["expected_annual_return_M"]
+        STD_M = statistics["annual_std_M"]
 
-        statistics["beta"]  = corr_IM * STD_I / STD_M
-        statistics["alpha"] = (R_I - R_RF) - statistics["beta"] * ( R_M - R_RF)
-
+        statistics["beta"] = corr_IM * STD_I / STD_M
+        statistics["alpha"] = (R_I - R_RF) - statistics["beta"] * (R_M - R_RF)
 
         # [4] Caclulate Sharpe Ratio SR, R squared R^2
         #############################################
@@ -181,27 +191,12 @@ class Instrument():
         ##                                  ^         ______             ##
         ##            SS_tot        SUM(E[R_I] - E[R_I])         ##
         ###########################################################
-        statistics["sharpe_ratio"]  = (R_I - R_RF) / STD_I
-        statistics["r_squared"]  = corr_IM ** 2
+        statistics["sharpe_ratio"] = (R_I - R_RF) / STD_I
+        statistics["r_squared"] = corr_IM ** 2
 
         self.risk_analysis_statistics = statistics
 
         return
 
-
-
-
     def explain_term(self, term):
         return
-
-
-
-
-
-
-
-
-
-
-
-
