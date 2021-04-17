@@ -12,8 +12,13 @@ import utils
 
 
 def download_data(ticker, start, end):
-    return web.DataReader(ticker, data_source='yahoo',
-                          start=start, end=end)
+    try:
+        return web.DataReader(ticker, data_source='yahoo',
+                              start=start, end=end)
+    except ValueError:
+        raise ValueError(
+            "Invalid ticker symbol specified or else there "
+            "was not an internet connection available.")
 
 
 class Instrument():
@@ -32,11 +37,7 @@ class Instrument():
                      datetime.timedelta(days=365)).strftime("%Y-%m-%d")
             self.date_range = {"start": start, "end": end}
 
-        try:
-            self.data = download_data(ticker, date_range['start'], date_range['end'])
-        except ValueError:
-            raise ValueError(
-                "Invalid ticker symbol specified or else there was not an internet connection available.")
+        self.data = download_data(ticker, date_range['start'], date_range['end'])
 
         self.return_statistics = {}
         self.risk_statistics = {}
