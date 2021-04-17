@@ -87,8 +87,6 @@ class Instrument():
         return self.return_statistics
 
     def calculate_risk_statistics(self):
-        statistics = {}
-
         # [1] Retrieve Closing prices
 
         returns = self.return_statistics[0]
@@ -105,19 +103,21 @@ class Instrument():
         #                                                            #
         ##############################################################
         # standrd deviation
-        statistics["daily_std"] = returns.std().values[0]
-        statistics["total_std"] = statistics["daily_std"] * \
+        daily_std = returns.std().values[0]
+        total_std = daily_std * \
             np.sqrt(len(returns))
-        statistics["annual_std"] = statistics["daily_std"] * np.sqrt(252)
+        annual_std = daily_std * np.sqrt(252)
 
         # variance
-        statistics["daily_var"] = statistics["daily_std"] ** 2
-        statistics["total_var"] = statistics["total_std"] ** 2
-        statistics["annual_var"] = statistics["annual_std"] ** 2
+        daily_var = daily_std ** 2
+        total_var = total_std ** 2
+        annual_var = annual_std ** 2
 
-        # statistics["annual_std"] = (returns.resample('Y').std() * np.sqrt(252)).mean().values[0]
+        self.risk_statistics = [
+            daily_std, total_std, annual_std,
+            daily_var, total_var, annual_var
+        ]
 
-        self.risk_statistics = statistics
         return self.risk_statistics
 
     def calculate_statistics(self):
