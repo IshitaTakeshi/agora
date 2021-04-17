@@ -14,7 +14,6 @@ import utils
 class Instrument():
     def __init__(self, ticker, date_range):
         self.id = -1
-        self.ticker = ticker
 
         if date_range is not None:
             self.date_range = date_range
