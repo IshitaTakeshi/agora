@@ -41,19 +41,16 @@ def get_ticker_historical_data(ticker, start, end):
 
     # DATETIMES
     try:
-        datetime.strptime(start, '%d/%m/%Y')
+        start = datetime.strptime(start, '%d/%m/%Y')
     except ValueError:
         raise ValueError(
             "ERR#0001: incorrect start date format, "
             "it should be 'dd/mm/yyyy'.")
     try:
-        datetime.strptime(end, '%d/%m/%Y')
+        end = datetime.strptime(end, '%d/%m/%Y')
     except ValueError:
         raise ValueError(
             "ERR#0002: incorrect en dformat, it should be 'dd/mm/yyyy'.")
-
-    start = datetime.strptime(start, '%d/%m/%Y')
-    end = datetime.strptime(end, '%d/%m/%Y')
 
     if start >= end:
         raise ValueError(
