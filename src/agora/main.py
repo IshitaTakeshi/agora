@@ -143,8 +143,7 @@ def get_tickers_statistics(tickers, start, end):
     for ticker in tickers:
         instrument = get_ticker_statistics(ticker=ticker, start=start, end=end)
         instruments.append(instrument)
-        (returns, log_returns, expected_daily_return, expected_total_return,
-                expected_annual_return, APR, APY) = instrument.return_statistics
+        expected_annual_return = instrument.return_statistics[4]
         expected_annual_return_list.append(expected_annual_return * 100)
         annual_std_list.append(instrument.risk_statistics['annual_std'])
 
