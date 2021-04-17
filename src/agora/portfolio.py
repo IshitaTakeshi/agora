@@ -66,8 +66,7 @@ class Portfolio():
         #                   σ_p                                                            #
         #################################################################################
         # PORTFOLIO RETURN
-        R_I_list = [instrument.return_statistics['expected_annual_return']
-                    for instrument in self.instruments]
+        R_I_list = [instrument.return_statistics[4] for instrument in self.instruments]
         statistics["portfolio_annual_return"] = np.sum(R_I_list * self.weights)
 
         # PORFTOLIO STANDARD DEVIATION

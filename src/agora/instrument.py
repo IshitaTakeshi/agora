@@ -48,7 +48,7 @@ class Instrument():
         return len(self.data)
 
     def calculate_return_statistics(self):
-        statistics = {}
+        statistics = []
 
         # [1] Occasionally, values of zero are obtained as an asset price. In all likelihood, this
         #      value is rubbish and cannot be trusted, as it implies that the asset has no value.
@@ -65,32 +65,33 @@ class Instrument():
         #      [*] Annualized Return (APR) = AVG(SUM(R_t per Year))           #
         #                                                                     #
         #######################################################################
-        statistics["returns"] = closing_prices.pct_change().dropna()
-        statistics["log_returns"] = closing_prices.apply(
+        returns = closing_prices.pct_change().dropna()
+        log_returns = closing_prices.apply(
             lambda x: np.log(x) - np.log(x.shift(1))).dropna()
 
         # [3] [*] For the expected return, we simply take the mean value of the calculated daily returns.
         #     [*] Multiply the average daily return by the length of the time series in order to
         #         obtain the expected return over the entire period.
-        cummulative_return = statistics["returns"].iloc[::-1].sum().values[0]
+        cummulative_return = returns.iloc[::-1].sum().values[0]
 
-        statistics["expected_daily_return"] = statistics["returns"].mean().values[0]
-        statistics["expected_total_return"] = statistics["expected_daily_return"] * \
-            len(statistics["returns"])
-        statistics["expected_annual_return"] = statistics["expected_daily_return"] * 252
-        statistics["APR"] = statistics["returns"].resample(
-            'Y').sum().mean().values[0]
-        statistics["APY"] = ((1 + cummulative_return) **
-                             (252 / len(statistics["returns"])) - 1)
+        expected_daily_return = returns.mean().values[0]
+        expected_total_return = expected_daily_return * len(returns)
+        expected_annual_return = expected_daily_return * 252
+        APR = returns.resample('Y').sum().mean().values[0]
+        APY = ((1 + cummulative_return) ** (252 / len(returns)) - 1)
 
-        self.return_statistics = statistics
+        self.return_statistics = [
+                returns, log_returns, expected_daily_return,
+                expected_total_return, expected_annual_return, APR, APY
+        ]
         return self.return_statistics
 
     def calculate_risk_statistics(self):
         statistics = {}
 
         # [1] Retrieve Closing prices
-        returns = self.return_statistics['returns']
+
+        returns = self.return_statistics[0]
 
         ##############################################################
         #                 ____________________                       #

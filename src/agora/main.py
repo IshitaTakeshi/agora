@@ -83,17 +83,19 @@ def get_ticker_statistics(ticker, start, end):
     #                 [*] expected return
     return_statistics, risk_statistics = instrument.calculate_statistics()
 
+    (returns, log_returns, expected_daily_return, expected_total_return,
+            expected_annual_return, APR, APY) = return_statistics
     # 4 - print result
     # RETURN
     messages = []
     messages.append(" Expected Total Return  ({} days)  = {} %".format(
-        instrument.n_trading_dates, round(return_statistics['expected_total_return'] * 100, 3)))
+        instrument.n_trading_dates, round(expected_total_return * 100, 3)))
     messages.append(" Expected Annual Return (252 days)  = {} % ".format(
-        round(return_statistics['expected_annual_return'] * 100, 3)))
+        round(expected_annual_return * 100, 3)))
     messages.append(" APR = {} % ".format(
-        round(return_statistics['APR'] * 100, 3)))
+        round(APR * 100, 3)))
     messages.append(" APY = {} % ".format(
-        round(return_statistics['APY'] * 100, 3)))
+        round(APY * 100, 3)))
     if printing:
         utils.pprint(messages)
 
@@ -141,8 +143,9 @@ def get_tickers_statistics(tickers, start, end):
     for ticker in tickers:
         instrument = get_ticker_statistics(ticker=ticker, start=start, end=end)
         instruments.append(instrument)
-        expected_annual_return_list.append(
-            instrument.return_statistics['expected_annual_return'] * 100)
+        (returns, log_returns, expected_daily_return, expected_total_return,
+                expected_annual_return, APR, APY) = instrument.return_statistics
+        expected_annual_return_list.append(expected_annual_return * 100)
         annual_std_list.append(instrument.risk_statistics['annual_std'])
 
     # 3 - Convert Descriptive statistics from list to dataframes

@@ -18,8 +18,7 @@ portfolios = {'ret': [], 'std': [], 'sr': []}
 
 
 def merge_instrument_returns(instruments, tickers):
-    returns = [instrument.return_statistics['returns']
-               for instrument in instruments]
+    returns = [instrument.return_statistics[0] for instrument in instruments]
     returns_df = reduce(lambda left, right: pd.merge(
         left, right, left_index=True, right_index=True), returns)
     returns_df.columns = tickers
