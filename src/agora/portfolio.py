@@ -207,9 +207,11 @@ class Portfolio():
 
     def efficient_frontier(self, mean_returns, cov_matrix, returns_range):
         '''
-         The first function "efficient_sharpe_ratio" is calculating the most efficient portfolio for a given target return, and the second
-         function "efficient_frontier" will take a range of target returns and compute efficient portfolio for each return level.
-         '''
+        The first function "efficient_sharpe_ratio" is calculating
+        the most efficient portfolio for a given target return, and the second
+        function "efficient_frontier" will take a range of target returns
+        and compute efficient portfolio for each return level.
+        '''
         efficients = []
         for ret in returns_range:
             efficients.append(self.efficient_sharpe_ratio(
