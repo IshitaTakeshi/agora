@@ -165,15 +165,19 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
     '''
     function:
         This function :
-        1. Uses `get_tickers_statistics` N times, 1 for each ticker instrument to calculate the descriptive metrics
-        2. Calls `portfolio_construction` for `num_port` times to construct `num_port` random portfolios
+        1. Uses `get_tickers_statistics` N times, 1 for each ticker instrument
+            to calculate the descriptive metrics
+        2. Calls `portfolio_construction` for `num_port` times to
+            construct `num_port` random portfolios
             2.1 Initialize random weights for the corresponding porftolio.
         3. Then by locating the one with the highest Sharpe ratio portfolio, it displays
                 [*] Maximum Sharpe ratio portfolio as red star sign.
                 [*] Minimum volatility portfolio as green start sign
-            All the randomly generated portfolios will be also plotted  with colour map applied to them based on the Sharpe ratio.
+            All the randomly generated portfolios will be also plotted
+            with colour map applied to them based on the Sharpe ratio.
             The bluer, the higher Sharpe ratio.
-        4. For these two optimal portfolios, it will also show how it allocates the budget within the portfolio.
+        4. For these two optimal portfolios, it will also show how it allocates
+            the budget within the portfolio.
 
 
     args:
