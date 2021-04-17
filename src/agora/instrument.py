@@ -11,6 +11,11 @@ from datetime import datetime, date
 import utils
 
 
+def download_data(ticker, start, end):
+    return web.DataReader(ticker, data_source='yahoo',
+                          start=start, end=end)
+
+
 class Instrument():
     def __init__(self, ticker, date_range):
         self.id = -1
@@ -28,7 +33,7 @@ class Instrument():
             self.date_range = {"start": start, "end": end}
 
         try:
-            self.download_data(ticker, date_range['start'], date_range['end'])
+            self.data = download_data(ticker, date_range['start'], date_range['end'])
         except ValueError:
             raise ValueError(
                 "Invalid ticker symbol specified or else there was not an internet connection available.")
@@ -36,12 +41,6 @@ class Instrument():
         self.return_statistics = {}
         self.risk_statistics = {}
         self.risk_analysis_statistics = {}
-
-    def download_data(self, ticker, start, end):
-        data = web.DataReader(ticker, data_source='yahoo',
-                              start=start, end=end)
-        self.data = data
-        return
 
     def calculate_return_statistics(self):
         statistics = {}
