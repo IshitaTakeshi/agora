@@ -79,7 +79,7 @@ class Instrument():
                              (252 / len(statistics["returns"])) - 1)
 
         self.return_statistics = statistics
-        return
+        return self.return_statistics
 
     def calculate_risk_statistics(self):
         statistics = {}
@@ -112,12 +112,12 @@ class Instrument():
         # statistics["annual_std"] = (returns.resample('Y').std() * np.sqrt(252)).mean().values[0]
 
         self.risk_statistics = statistics
-        return
+        return self.risk_statistics
 
     def calculate_statistics(self):
-        self.calculate_return_statistics()
-        self.calculate_risk_statistics()
-        return
+        returns = self.calculate_return_statistics()
+        risks = self.calculate_risk_statistics()
+        return returns, risks
 
     def risk_analysis(self):
         #########################################################

@@ -100,9 +100,7 @@ def get_ticker_statistics(ticker, start, end):
     #                 [*] log return
     #                 [*] expected daily return
     #                 [*] expected return
-    instrument.calculate_statistics()
-    return_statistics = instrument.return_statistics
-    risk_statistics = instrument.risk_statistics
+    return_statistics, risk_statistics = instrument.calculate_statistics()
 
     # 4 - print result
     # RETURN
