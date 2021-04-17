@@ -113,7 +113,7 @@ def get_ticker_statistics(ticker, start, end):
     return instrument
 
 
-def get_tickers_statistics(ticker_list, start, end):
+def get_tickers_statistics(tickers, start, end):
     '''
     function:
         This function
@@ -127,7 +127,7 @@ def get_tickers_statistics(ticker_list, start, end):
 
     args:
         [*] N             : Number of tickers
-        [*] ticker_list : The ticker list for which historical data are retrieved
+        [*] tickers : The ticker list for which historical data are retrieved
         [*] start       : Date formatted as `dd/mm/yyyy`, since when data is going to be retrieved.
         [*] end         : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
@@ -138,7 +138,7 @@ def get_tickers_statistics(ticker_list, start, end):
     instruments = []
     expected_annual_return_list = []
     annual_std_list = []
-    for ticker in ticker_list:
+    for ticker in tickers:
         instrument = get_ticker_statistics(ticker=ticker, start=start, end=end)
         instruments.append(instrument)
         expected_annual_return_list.append(
@@ -150,7 +150,7 @@ def get_tickers_statistics(ticker_list, start, end):
                         "Annual Standard Deviation": annual_std_list
                         }
     descriptive_df = pd.DataFrame(descriptive_dict)
-    descriptive_df.index = ticker_list
+    descriptive_df.index = tickers
 
     # 4 - Display results
     utils.display(descriptive_df)
@@ -158,7 +158,7 @@ def get_tickers_statistics(ticker_list, start, end):
     return instruments, descriptive_df
 
 
-def portfolio_optimization(num_portfolios, ticker_list, start, end):
+def portfolio_optimization(num_portfolios, tickers, start, end):
     '''
     function:
         This function :
@@ -176,7 +176,7 @@ def portfolio_optimization(num_portfolios, ticker_list, start, end):
     args:
         [*] P             : Number of portfolios
         [*] N             : Number of tickers
-        [*] ticker_list : The ticker list of which portfolio will be constructed
+        [*] tickers : The ticker list of which portfolio will be constructed
         [*] start       : Date formatted as `dd/mm/yyyy`, since when data is going to be retrieved.
         [*] end         : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
@@ -185,13 +185,13 @@ def portfolio_optimization(num_portfolios, ticker_list, start, end):
 
     # 2 - Get the instrument list along with their calculated descriptive statistics
     instruments, descriptive_df = get_tickers_statistics(
-        ticker_list=ticker_list, start=start, end=end)
+        tickers=tickers, start=start, end=end)
     stocks_idx = [idx for idx in range(
-        len(ticker_list)) if ticker_list[idx] in stocks_tickers]
+        len(tickers)) if tickers[idx] in stocks_tickers]
     risk_free = utils.risk_free_return(
         date_range=instruments[0].date_range)
     returns_merged = utils.merge_instrument_returns(
-        instruments=instruments, ticker_list=ticker_list)
+        instruments=instruments, tickers=tickers)
 
     print("instruments = ", instruments)
 
@@ -201,7 +201,7 @@ def portfolio_optimization(num_portfolios, ticker_list, start, end):
         if i % 100 == 0:
             print("{} out of {}\n".format(i, num_portfolios), end='')
         portfolio = Portfolio(instruments=instruments, returns_merged=returns_merged,
-                              ticker_list=ticker_list, risk_free=risk_free)
+                              tickers=tickers, risk_free=risk_free)
 
         # weights
         portfolio.initialize_weights()
@@ -257,7 +257,7 @@ def portfolio_optimization(num_portfolios, ticker_list, start, end):
     weights_dict = {"Max SR Allocation Weights": opt_weights *
                     100, 'Min σ Allocation Weights': min_weights * 100}
     weights_df = pd.DataFrame(weights_dict)
-    weights_df.index = ticker_list
+    weights_df.index = tickers
     if printing:
         utils.display(weights_df)
 

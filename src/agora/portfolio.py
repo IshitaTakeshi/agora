@@ -22,7 +22,7 @@ class Portfolio():
     def __init__(self, **kwargs):
         self.instruments = kwargs['instruments']
         self.returns_merged = kwargs['returns_merged']
-        self.ticker_list = kwargs['ticker_list']
+        self.tickers = kwargs['tickers']
         self.num_instruments = len(self.instruments)
         self.risk_free = kwargs['risk_free']
 
@@ -110,7 +110,7 @@ class Portfolio():
 
         weights = self.weights
         weights_df = pd.DataFrame(weights, columns=['Allocation Weights'])
-        weights_df.index = self.ticker_list
+        weights_df.index = self.tickers
 
         annual_return = portfolio_statistics['portfolio_annual_return']
         annual_std = portfolio_statistics['portfolio_annual_std']
