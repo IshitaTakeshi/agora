@@ -28,7 +28,6 @@ def get_ticker_historical_data(ticker, start, end):
         [*] from_date : Date formatted as `dd/mm/yyyy`, since when data is going to be retrieved.
         [*] to_date   : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
-    printing = False
 
     # 2 - check parameter validity
     # DATETIMES
@@ -52,16 +51,7 @@ def get_ticker_historical_data(ticker, start, end):
     date_range = {'start': start, 'end': end}
 
     # 3 - Retrieve instrument data
-    instrument = Instrument(ticker, date_range)
-    if printing:
-        utils.display(instrument.data.tail(15))
-
-    # 4 - print result
-    messages = [" Trading for T = {} days ".format(instrument.n_trading_dates)]
-    if printing:
-        utils.pprint(messages)
-
-    return instrument
+    return Instrument(ticker, date_range)
 
 
 def get_ticker_statistics(ticker, start, end):
