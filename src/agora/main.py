@@ -36,14 +36,16 @@ def get_ticker_historical_data(ticker, start, end):
         ticker in tickers['Symbol']
     except ValueError:
         raise ValueError(
-            "ERR#0012: There is no ticker with that name. Check available tickers symbols with : `./agora.py tickers *`")
+            "ERR#0012: There is no ticker with that name. "
+            "Check available tickers symbols with : `./agora.py tickers *`")
 
     # DATETIMES
     try:
         datetime.strptime(start, '%d/%m/%Y')
     except ValueError:
         raise ValueError(
-            "ERR#0001: incorrect start date format, it should be 'dd/mm/yyyy'.")
+            "ERR#0001: incorrect start date format, "
+            "it should be 'dd/mm/yyyy'.")
     try:
         datetime.strptime(end, '%d/%m/%Y')
     except ValueError:
@@ -55,7 +57,8 @@ def get_ticker_historical_data(ticker, start, end):
 
     if start >= end:
         raise ValueError(
-            "ERR#0003: `end` should be greater than `start`, both formatted as 'dd/mm/yyyy'.")
+            "ERR#0003: `end` should be greater than `start`, "
+            "both formatted as 'dd/mm/yyyy'.")
 
     date_range = {'start': start, 'end': end}
 
@@ -76,7 +79,8 @@ def get_ticker_statistics(ticker, start, end):
     '''
     function:
         This function
-        1. Uses `ticker_historical_data` to retrieve all the price data for a ticker in the following format :
+        1. Uses `ticker_historical_data` to retrieve all the price data
+            for a ticker in the following format :
 
             Date || Open | High | Low | Close | Adj Close |
             -----||------|------|-----|-------|-----------|
