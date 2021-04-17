@@ -73,15 +73,7 @@ def get_ticker_statistics(ticker, start, end):
 
     # 2
     # 2.1 - Get the data
-    instrument = get_ticker_historical_data(ticker, start, end)
-
-    # 2.2 - Calculate [*] return
-    #                 [*] log return
-    #                 [*] expected daily return
-    #                 [*] expected return
-    instrument.calculate_statistics()
-
-    return instrument
+    return get_ticker_historical_data(ticker, start, end)
 
 
 def get_tickers_statistics(tickers, start, end):
