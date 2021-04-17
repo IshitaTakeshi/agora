@@ -98,7 +98,7 @@ def get_ticker_statistics(ticker, start, end):
     # RETURN
     messages = []
     messages.append(" Expected Total Return  ({} days)  = {} %".format(
-        len(instrument.data), round(return_statistics['expected_total_return'] * 100, 3)))
+        instrument.n_trading_dates, round(return_statistics['expected_total_return'] * 100, 3)))
     messages.append(" Expected Annual Return (252 days)  = {} % ".format(
         round(return_statistics['expected_annual_return'] * 100, 3)))
     messages.append(" APR = {} % ".format(
@@ -111,11 +111,11 @@ def get_ticker_statistics(ticker, start, end):
     # RISK
     messages = []
     messages.append(" Total Standard Deviation  ({} days)  = {}  ".format(
-        len(instrument.data), round(risk_statistics['total_std'], 3)))
+        instrument.n_trading_dates, round(risk_statistics['total_std'], 3)))
     messages.append(" Annual Standard Deviation (252 days) = {} ".format(
         round(risk_statistics['annual_std'], 3)))
     messages.append(" Total Variance  ({} days)  = {}  ".format(
-        len(instrument.data), round(risk_statistics['total_var'], 3)))
+        instrument.n_trading_dates, round(risk_statistics['total_var'], 3)))
     messages.append(" Annual Variance (252 days) = {} ".format(
         round(risk_statistics['annual_var'], 3)))
     if printing:
