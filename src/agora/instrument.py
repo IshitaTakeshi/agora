@@ -195,6 +195,3 @@ class Instrument():
         self.risk_analysis_statistics = statistics
 
         return
-
-    def explain_term(self, term):
-        return
