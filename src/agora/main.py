@@ -31,14 +31,6 @@ def get_ticker_historical_data(ticker, start, end):
     printing = False
 
     # 2 - check parameter validity
-    # TICKER
-    try:
-        ticker in tickers['Symbol']
-    except ValueError:
-        raise ValueError(
-            "ERR#0012: There is no ticker with that name. "
-            "Check available tickers symbols with : `./agora.py tickers *`")
-
     # DATETIMES
     try:
         start = datetime.strptime(start, '%d/%m/%Y')
