@@ -43,6 +43,10 @@ class Instrument():
         self.risk_statistics = {}
         self.risk_analysis_statistics = {}
 
+    @property
+    def n_trading_dates(self):
+        return len(self.data)
+
     def calculate_return_statistics(self):
         statistics = {}
 

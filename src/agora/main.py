@@ -57,7 +57,7 @@ def get_ticker_historical_data(ticker, start, end):
         utils.display(instrument.data.tail(15))
 
     # 4 - print result
-    messages = [" Trading for T = {} days ".format(len(instrument.data))]
+    messages = [" Trading for T = {} days ".format(instrument.n_trading_dates)]
     if printing:
         utils.pprint(messages)
 
