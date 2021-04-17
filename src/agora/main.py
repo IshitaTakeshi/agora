@@ -136,12 +136,12 @@ def get_tickers_statistics(ticker_list, start, end):
     printing = False
 
     # 2 - Retrieve Data & Calculate Descriptive statistics for each ticker:
-    instrument_list = []
+    instruments = []
     expected_annual_return_list = []
     annual_std_list = []
     for ticker in ticker_list:
         instrument = get_ticker_statistics(ticker=ticker, start=start, end=end)
-        instrument_list.append(instrument)
+        instruments.append(instrument)
         expected_annual_return_list.append(
             instrument.return_statistics['expected_annual_return'] * 100)
         annual_std_list.append(instrument.risk_statistics['annual_std'])
@@ -156,7 +156,7 @@ def get_tickers_statistics(ticker_list, start, end):
     # 4 - Display results
     utils.display(descriptive_df)
 
-    return instrument_list, descriptive_df
+    return instruments, descriptive_df
 
 
 def portfolio_optimization(num_portfolios, ticker_list, start, end):
@@ -185,23 +185,23 @@ def portfolio_optimization(num_portfolios, ticker_list, start, end):
     printing = True
 
     # 2 - Get the instrument list along with their calculated descriptive statistics
-    instrument_list, descriptive_df = get_tickers_statistics(
+    instruments, descriptive_df = get_tickers_statistics(
         ticker_list=ticker_list, start=start, end=end)
     stocks_idx = [idx for idx in range(
         len(ticker_list)) if ticker_list[idx] in stocks_tickers]
     risk_free = utils.risk_free_return(
-        date_range=instrument_list[0].date_range)
+        date_range=instruments[0].date_range)
     returns_merged = utils.merge_instrument_returns(
-        instrument_list=instrument_list, ticker_list=ticker_list)
+        instruments=instruments, ticker_list=ticker_list)
 
-    print("instrument_list = ", instrument_list)
+    print("instruments = ", instruments)
 
     # 3 - Portfolio simulation
     all_weights, ret_arr, std_arr, sharpe_arr = [], [], [], []
     for i in range(num_portfolios):
         if i % 100 == 0:
             print("{} out of {}\n".format(i, num_portfolios), end='')
-        portfolio = Portfolio(instrument_list=instrument_list, returns_merged=returns_merged,
+        portfolio = Portfolio(instruments=instruments, returns_merged=returns_merged,
                               ticker_list=ticker_list, risk_free=risk_free)
 
         # weights
@@ -265,7 +265,7 @@ def portfolio_optimization(num_portfolios, ticker_list, start, end):
     # 5 - Plot the portfolios along with the 2 efficient portfolios.
     title = "{}_portfolio_simulation".format(num_portfolios)
     portfolio.plot_portfolio_simulation(
-        title, instrument_list[0].date_range, std_arr, ret_arr, sharpe_arr, descriptive_df, returns_merged)
+        title, instruments[0].date_range, std_arr, ret_arr, sharpe_arr, descriptive_df, returns_merged)
 
     return
 

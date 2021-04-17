@@ -17,9 +17,9 @@ from functools import reduce
 portfolios = {'ret': [], 'std': [], 'sr': []}
 
 
-def merge_instrument_returns(instrument_list, ticker_list):
+def merge_instrument_returns(instruments, ticker_list):
     returns = [instrument.return_statistics['returns']
-               for instrument in instrument_list]
+               for instrument in instruments]
     returns_df = reduce(lambda left, right: pd.merge(
         left, right, left_index=True, right_index=True), returns)
     returns_df.columns = ticker_list
@@ -69,13 +69,13 @@ def display(data):
 def pprint(messages):
     spaces = len(max(messages, key=len)) + 2
 
-    print("+" + "-"*spaces + "+")
+    print("+" + "-" * spaces + "+")
     for message in messages:
         print('|', end='')
         print(" " + message + " ", end='')
         print(" " * (spaces - 2 - len(message)), end='')
         print('|')
-    print("+" + "-"*spaces + "+")
+    print("+" + "-" * spaces + "+")
     return
 
 

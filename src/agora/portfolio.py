@@ -20,10 +20,10 @@ np.random.seed(3939)
 class Portfolio():
 
     def __init__(self, **kwargs):
-        self.instrument_list = kwargs['instrument_list']
+        self.instruments = kwargs['instruments']
         self.returns_merged = kwargs['returns_merged']
         self.ticker_list = kwargs['ticker_list']
-        self.num_instruments = len(self.instrument_list)
+        self.num_instruments = len(self.instruments)
         self.risk_free = kwargs['risk_free']
 
         self.weights = []
@@ -67,12 +67,12 @@ class Portfolio():
         #################################################################################
         # PORTFOLIO RETURN
         R_I_list = [instrument.return_statistics['expected_annual_return']
-                    for instrument in self.instrument_list]
+                    for instrument in self.instruments]
         statistics["portfolio_annual_return"] = np.sum(R_I_list * self.weights)
 
         # PORFTOLIO STANDARD DEVIATION
         STD_I_list = [instrument.risk_statistics['annual_std']
-                      for instrument in self.instrument_list]
+                      for instrument in self.instruments]
         covariance_matrix = self.calculate_covariance_matrix()
         statistics["portfolio_annual_std"] = np.sqrt(
             np.dot(self.weights.T, np.dot(covariance_matrix, self.weights))) * np.sqrt(252)
