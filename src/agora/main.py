@@ -71,8 +71,6 @@ def get_ticker_statistics(ticker, start, end):
         [*] end       : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
 
-    printing = False
-
     # 2
     # 2.1 - Get the data
     instrument = get_ticker_historical_data(ticker, start, end)
@@ -81,40 +79,7 @@ def get_ticker_statistics(ticker, start, end):
     #                 [*] log return
     #                 [*] expected daily return
     #                 [*] expected return
-    return_statistics, risk_statistics = instrument.calculate_statistics()
-
-    (returns, log_returns, expected_daily_return, expected_total_return,
-            expected_annual_return, APR, APY) = return_statistics
-
-    (daily_std, total_std, annual_std,
-            daily_var, total_var, annual_var) = risk_statistics
-
-    # 4 - print result
-    # RETURN
-    messages = []
-    messages.append(" Expected Total Return  ({} days)  = {} %".format(
-        instrument.n_trading_dates, round(expected_total_return * 100, 3)))
-    messages.append(" Expected Annual Return (252 days)  = {} % ".format(
-        round(expected_annual_return * 100, 3)))
-    messages.append(" APR = {} % ".format(
-        round(APR * 100, 3)))
-    messages.append(" APY = {} % ".format(
-        round(APY * 100, 3)))
-    if printing:
-        utils.pprint(messages)
-
-    # RISK
-    messages = []
-    messages.append(" Total Standard Deviation  ({} days)  = {}  ".format(
-        instrument.n_trading_dates, round(total_std, 3)))
-    messages.append(" Annual Standard Deviation (252 days) = {} ".format(
-        round(annual_std, 3)))
-    messages.append(" Total Variance  ({} days)  = {}  ".format(
-        instrument.n_trading_dates, round(total_var, 3)))
-    messages.append(" Annual Variance (252 days) = {} ".format(
-        round(annual_var, 3)))
-    if printing:
-        utils.pprint(messages)
+    instrument.calculate_statistics()
 
     return instrument
 
