@@ -10,7 +10,6 @@ from instrument import Instrument
 from portfolio import Portfolio
 
 tickers_data = pd.DataFrame(pd.read_csv('data/tickers.csv'))
-tickers = tickers_data['Symbol'].to_frame()
 stocks_tickers = list(tickers_data.dropna(subset=['IPOyear'])['Symbol'])
 
 
