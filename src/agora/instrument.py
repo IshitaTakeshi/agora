@@ -29,22 +29,15 @@ class Instrument():
         self.end = end
         self.data = download_data(ticker, self.start, self.end)
 
-        self.returns, self.expected_annual_return = self.calculate_return_statistics()
-        self.annual_std = self.calculate_risk_statistics()
+        closing_prices = self.data['Adj Close'].to_frame()
+        self.returns, self.expected_annual_return = self.calculate_return_statistics(closing_prices)
+        self.annual_std = self.calculate_risk_statistics(self.returns)
 
     @property
     def n_trading_dates(self):
         return len(self.data)
 
-    def calculate_return_statistics(self):
-        statistics = []
-
-        # [1] Occasionally, values of zero are obtained as an asset price. In all likelihood, this
-        #      value is rubbish and cannot be trusted, as it implies that the asset has no value.
-        #     In these cases, we replace the reported asset price by the mean of all asset prices.
-        closing_prices = self.data['Adj Close'].to_frame()
-        # closing_prices[closing_prices == 0] = closing_prices.mean()
-
+    def calculate_return_statistics(self, closing_prices):
         #######################################################################
         #           P_t - P_{t-1}                                              #
         #  [2] R_t = -------------   ,   change_t = log(P_t) - log(P_{t - 1}) #
@@ -71,10 +64,8 @@ class Instrument():
 
         return returns, expected_annual_return
 
-    def calculate_risk_statistics(self):
+    def calculate_risk_statistics(self, returns):
         # [1] Retrieve Closing prices
-
-        returns = self.returns
 
         ##############################################################
         #                 ____________________                       #
