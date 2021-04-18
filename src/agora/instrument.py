@@ -37,7 +37,7 @@ def calc_returns(closing_prices):
     return returns, expected_annual_return
 
 
-def calculate_risk_statistics(returns):
+def calc_risk(returns):
     # [1] Retrieve Closing prices
 
     ##############################################################
@@ -65,7 +65,7 @@ class Instrument():
 
         closing_prices = self.data['Adj Close'].to_frame()
         self.returns, self.expected_annual_return = calc_returns(closing_prices)
-        self.annual_std = calculate_risk_statistics(self.returns)
+        self.annual_std = calc_risk(self.returns)
 
     @property
     def n_trading_dates(self):
