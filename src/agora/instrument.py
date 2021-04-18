@@ -29,7 +29,8 @@ class Instrument():
         self.end = end
         self.data = download_data(ticker, self.start, self.end)
 
-        self.calculate_statistics()
+        self.returns, self.expected_annual_return = self.calculate_return_statistics()
+        self.annual_std = self.calculate_risk_statistics()
 
     @property
     def n_trading_dates(self):
@@ -68,8 +69,7 @@ class Instrument():
         APR = returns.resample('Y').sum().mean().values[0]
         APY = ((1 + cummulative_return) ** (252 / len(returns)) - 1)
 
-        self.returns = returns
-        self.expected_annual_return = expected_annual_return
+        return returns, expected_annual_return
 
     def calculate_risk_statistics(self):
         # [1] Retrieve Closing prices
@@ -98,8 +98,4 @@ class Instrument():
         total_var = total_std ** 2
         annual_var = annual_std ** 2
 
-        self.annual_std = annual_std
-
-    def calculate_statistics(self):
-        self.calculate_return_statistics()
-        self.calculate_risk_statistics()
+        return annual_std
