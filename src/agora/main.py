@@ -53,34 +53,11 @@ def get_ticker_historical_data(ticker, start, end):
     return Instrument(ticker, date_range)
 
 
-def get_ticker_statistics(ticker, start, end):
-    '''
-    function:
-        This function
-        1. Uses `ticker_historical_data` to retrieve all the price data
-            for a ticker in the following format :
-
-            Date || Open | High | Low | Close | Adj Close |
-            -----||------|------|-----|-------|-----------|
-            xxxx || xxxx | xxxx | xxx | xxxxx | xxxxxxxxx |
-        2. Calculate both RETURN & RISK descriptive statistics
-
-    args:
-        [*] ticker    : The ticker for which historical data are retrieved
-        [*] start.    : Date formatted as `dd/mm/yyyy`, since when data is going to be retrieved.
-        [*] end       : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
-    '''
-
-    # 2
-    # 2.1 - Get the data
-    return get_ticker_historical_data(ticker, start, end)
-
-
 def get_tickers_statistics(tickers, start, end):
     '''
     function:
         This function
-        1. Uses `get_ticker_statistics` N times, 1 for each ticker instrument. For each instrument
+        1. Uses `get_ticker_historical_data` N times, 1 for each ticker instrument. For each instrument
             1.1 Uses `ticker_historical_data` to retrieve all the price data for a ticker in the following format :
 
             Date || Open | High | Low | Close | Adj Close |
@@ -102,7 +79,7 @@ def get_tickers_statistics(tickers, start, end):
     expected_annual_return_list = []
     annual_std_list = []
     for ticker in tickers:
-        instrument = get_ticker_statistics(ticker=ticker, start=start, end=end)
+        instrument = get_ticker_historical_data(ticker=ticker, start=start, end=end)
         instruments.append(instrument)
         expected_annual_return = instrument.return_statistics[4]
         expected_annual_return_list.append(expected_annual_return * 100)
