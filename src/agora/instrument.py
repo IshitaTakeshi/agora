@@ -25,9 +25,8 @@ class Instrument():
     def __init__(self, ticker, date_range):
         self.id = -1
 
-        if date_range is not None:
-            self.date_range = date_range
-        else:
+        self.date_range = date_range
+        if date_range is None:
             # If there was no specified time interval, presume that the
             # user intends to download historical price data from the
             # past year. Notice that the end of the time interval is
