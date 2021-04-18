@@ -70,10 +70,6 @@ class Instrument():
 
         self.returns = returns
         self.expected_annual_return = expected_annual_return
-        return [
-                returns, log_returns, expected_daily_return,
-                expected_total_return, expected_annual_return, APR, APY
-        ]
 
     def calculate_risk_statistics(self):
         # [1] Retrieve Closing prices
@@ -104,12 +100,6 @@ class Instrument():
 
         self.annual_std = annual_std
 
-        return [
-            daily_std, total_std, annual_std,
-            daily_var, total_var, annual_var
-        ]
-
     def calculate_statistics(self):
-        returns = self.calculate_return_statistics()
-        risks = self.calculate_risk_statistics()
-        return returns, risks
+        self.calculate_return_statistics()
+        self.calculate_risk_statistics()
