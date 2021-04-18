@@ -21,7 +21,7 @@ def download_data(ticker, start, end):
             "was not an internet connection available.")
 
 
-def calculate_return_statistics(closing_prices):
+def calc_returns(closing_prices):
     #######################################################################
     #           P_t - P_{t-1}                                              #
     #  [2] R_t = -------------   ,   change_t = log(P_t) - log(P_{t - 1}) #
@@ -64,7 +64,7 @@ class Instrument():
         self.data = download_data(ticker, self.start, self.end)
 
         closing_prices = self.data['Adj Close'].to_frame()
-        self.returns, self.expected_annual_return = calculate_return_statistics(closing_prices)
+        self.returns, self.expected_annual_return = calc_returns(closing_prices)
         self.annual_std = calculate_risk_statistics(self.returns)
 
     @property
