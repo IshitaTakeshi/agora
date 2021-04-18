@@ -26,24 +26,22 @@ def merge_instrument_returns(instruments, tickers):
     return returns_df
 
 
-def risk_free_return(date_range):
+def risk_free_return(start, end):
     '''
         function:
             Retrieve Data for [*] Risk-free instrument : ^IRX or 3month Tbill
     '''
-    start, end = date_range['start'], date_range['end']
     risk_free = web.DataReader('^IRX', data_source='yahoo', start=start, end=end)[
         'Adj Close'].to_frame()
     risk_free_return = risk_free.pct_change().dropna().mean().values[0]
     return risk_free_return
 
 
-def market_info(date_range):
+def market_info(start, end):
     '''
         function:
             Retrieve Data for [*] Market instrument : ^GSPC or S&P500
     '''
-    start, end = date_range['start'], date_range['end']
     market = web.DataReader('^GSPC', data_source='yahoo', start=start, end=end)[
         'Adj Close'].to_frame()
     returns_m = market.pct_change().dropna()

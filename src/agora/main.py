@@ -130,8 +130,7 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
         tickers=tickers, start=start, end=end)
     stocks_idx = [idx for idx in range(
         len(tickers)) if tickers[idx] in stocks_tickers]
-    risk_free = utils.risk_free_return(
-        date_range=instruments[0].date_range)
+    risk_free = utils.risk_free_return(instruments[0].start, instruments[0].end)
     returns_merged = utils.merge_instrument_returns(
         instruments=instruments, tickers=tickers)
 
@@ -206,7 +205,8 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
     # 5 - Plot the portfolios along with the 2 efficient portfolios.
     title = "{}_portfolio_simulation".format(num_portfolios)
     portfolio.plot_portfolio_simulation(
-        title, instruments[0].date_range, std_arr, ret_arr, sharpe_arr, descriptive_df, returns_merged)
+        title, instruments[0].start, instruments[0].end,
+        std_arr, ret_arr, sharpe_arr, descriptive_df, returns_merged)
 
     return
 

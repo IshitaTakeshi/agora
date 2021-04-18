@@ -241,7 +241,8 @@ class Portfolio():
             np.matrix(x).T * cov.T.dot(np.matrix(x)))[0, 0] for x in portfolio_weights]
         return portfolio_stdvs, portfolio_returns
 
-    def plot_portfolio_simulation(self, title, date_range, std_arr, ret_arr, sharpe_arr, descriptive_df, returns_merged):
+    def plot_portfolio_simulation(self, title, start, end, std_arr, ret_arr,
+                                  sharpe_arr, descriptive_df, returns_merged):
         # [1] Define the data points for :
         # # 1.0 - Efficient Frontier
         # mean_returns = returns_merged.mean()
@@ -265,7 +266,7 @@ class Portfolio():
         cal_x, cal_y, utility = self.capital_allocation_line(ret_arr, opt_sr)
 
         # 1.4 - Market portfolio
-        market = utils.market_info(date_range)
+        market = utils.market_info(start, end)
         R_M = market["expected_annual_return_M"]
         STD_M = market["annual_std_M"]
 
