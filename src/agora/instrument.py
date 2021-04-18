@@ -22,11 +22,11 @@ def download_data(ticker, start, end):
 
 
 class Instrument():
-    def __init__(self, ticker, date_range):
+    def __init__(self, ticker, start, end):
         self.id = -1
 
-        self.date_range = date_range
-        self.data = download_data(ticker, date_range['start'], date_range['end'])
+        self.date_range = {'start': start, 'end': end}
+        self.data = download_data(ticker, self.date_range['start'], self.date_range['end'])
 
         self.return_statistics = {}
         self.risk_statistics = {}

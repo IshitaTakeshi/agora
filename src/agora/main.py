@@ -47,10 +47,8 @@ def get_ticker_historical_data(ticker, start, end):
             "ERR#0003: `end` should be greater than `start`, "
             "both formatted as 'dd/mm/yyyy'.")
 
-    date_range = {'start': start, 'end': end}
-
     # 3 - Retrieve instrument data
-    return Instrument(ticker, date_range)
+    return Instrument(ticker, start, end)
 
 
 def get_tickers_statistics(tickers, start, end):
