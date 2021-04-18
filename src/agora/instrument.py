@@ -26,16 +26,6 @@ class Instrument():
         self.id = -1
 
         self.date_range = date_range
-        if date_range is None:
-            # If there was no specified time interval, presume that the
-            # user intends to download historical price data from the
-            # past year. Notice that the end of the time interval is
-            # today, while the start is one year in the past.
-            end = datetime.datetime.now().strftime("%Y-%m-%d")
-            start = (datetime.datetime.now() -
-                     datetime.timedelta(days=365)).strftime("%Y-%m-%d")
-            self.date_range = {"start": start, "end": end}
-
         self.data = download_data(ticker, date_range['start'], date_range['end'])
 
         self.return_statistics = {}
