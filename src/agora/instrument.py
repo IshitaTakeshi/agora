@@ -79,8 +79,6 @@ def calculate_risk_statistics(returns):
 
 class Instrument():
     def __init__(self, ticker, start, end):
-        self.id = -1
-
         self.start = start
         self.end = end
         self.data = download_data(ticker, self.start, self.end)
