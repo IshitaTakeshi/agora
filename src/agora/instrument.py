@@ -29,8 +29,6 @@ class Instrument():
         self.end = end
         self.data = download_data(ticker, self.start, self.end)
 
-        self.return_statistics = {}
-        self.risk_statistics = {}
         self.calculate_statistics()
 
     @property
@@ -70,18 +68,17 @@ class Instrument():
         APR = returns.resample('Y').sum().mean().values[0]
         APY = ((1 + cummulative_return) ** (252 / len(returns)) - 1)
 
-        self.return_statistics = [
+        self.returns = returns
+        self.expected_annual_return = expected_annual_return
+        return [
                 returns, log_returns, expected_daily_return,
                 expected_total_return, expected_annual_return, APR, APY
         ]
-        self.returns = returns
-        self.expected_annual_return = expected_annual_return
-        return self.return_statistics
 
     def calculate_risk_statistics(self):
         # [1] Retrieve Closing prices
 
-        returns = self.return_statistics[0]
+        returns = self.returns
 
         ##############################################################
         #                 ____________________                       #
@@ -105,13 +102,12 @@ class Instrument():
         total_var = total_std ** 2
         annual_var = annual_std ** 2
 
-        self.risk_statistics = [
+        self.annual_std = annual_std
+
+        return [
             daily_std, total_std, annual_std,
             daily_var, total_var, annual_var
         ]
-        self.annual_std = annual_std
-
-        return self.risk_statistics
 
     def calculate_statistics(self):
         returns = self.calculate_return_statistics()

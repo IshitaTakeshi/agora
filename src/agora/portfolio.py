@@ -66,11 +66,11 @@ class Portfolio():
         #                   σ_p                                                            #
         #################################################################################
         # PORTFOLIO RETURN
-        R_I_list = [instrument.return_statistics[4] for instrument in self.instruments]
+        R_I_list = [instrument.expected_annual_return for instrument in self.instruments]
         statistics["portfolio_annual_return"] = np.sum(R_I_list * self.weights)
 
         # PORFTOLIO STANDARD DEVIATION
-        STD_I_list = [instrument.risk_statistics[2] for instrument in self.instruments]
+        STD_I_list = [instrument.annual_std for instrument in self.instruments]
         covariance_matrix = self.calculate_covariance_matrix()
         statistics["portfolio_annual_std"] = np.sqrt(
             np.dot(self.weights.T, np.dot(covariance_matrix, self.weights))) * np.sqrt(252)
