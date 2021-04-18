@@ -74,6 +74,7 @@ class Instrument():
                 returns, log_returns, expected_daily_return,
                 expected_total_return, expected_annual_return, APR, APY
         ]
+        self.returns = returns
         return self.return_statistics
 
     def calculate_risk_statistics(self):

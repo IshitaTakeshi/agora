@@ -18,7 +18,7 @@ portfolios = {'ret': [], 'std': [], 'sr': []}
 
 
 def merge_instrument_returns(instruments, tickers):
-    returns = [instrument.return_statistics[0] for instrument in instruments]
+    returns = [instrument.returns for instrument in instruments]
     returns_df = reduce(lambda left, right: pd.merge(
         left, right, left_index=True, right_index=True), returns)
     returns_df.columns = tickers
@@ -42,8 +42,8 @@ def market_info(start, end):
         function:
             Retrieve Data for [*] Market instrument : ^GSPC or S&P500
     '''
-    market = web.DataReader('^GSPC', data_source='yahoo', start=start, end=end)[
-        'Adj Close'].to_frame()
+    market = web.DataReader('^GSPC', data_source='yahoo',
+                            start=start, end=end)['Adj Close'].to_frame()
     returns_m = market.pct_change().dropna()
     annual_return_m = returns_m.mean().values[0] * 252
     annul_std_m = returns_m.std().values[0] * np.sqrt(252)
