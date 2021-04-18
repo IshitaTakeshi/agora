@@ -81,7 +81,7 @@ def get_tickers_statistics(tickers, start, end):
         instruments.append(instrument)
         expected_annual_return = instrument.expected_annual_return
         expected_annual_return_list.append(expected_annual_return * 100)
-        annual_std_list.append(instrument.risk_statistics[2])
+        annual_std_list.append(instrument.annual_std)
 
     # 3 - Convert Descriptive statistics from list to dataframes
     descriptive_dict = {"Expected Annual Return": expected_annual_return_list,

@@ -109,6 +109,7 @@ class Instrument():
             daily_std, total_std, annual_std,
             daily_var, total_var, annual_var
         ]
+        self.annual_std = annual_std
 
         return self.risk_statistics
 
