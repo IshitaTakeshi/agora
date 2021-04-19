@@ -19,12 +19,12 @@ np.random.seed(3939)
 
 class Portfolio():
 
-    def __init__(self, **kwargs):
-        self.instruments = kwargs['instruments']
-        self.returns_merged = kwargs['returns_merged']
-        self.tickers = kwargs['tickers']
+    def __init__(self, instruments, returns_merged, tickers, risk_free):
+        self.instruments = instruments
+        self.returns_merged = returns_merged
+        self.tickers = tickers
         self.num_instruments = len(self.instruments)
-        self.risk_free = kwargs['risk_free']
+        self.risk_free = risk_free
 
         self.weights = []
         self.statistics = {}

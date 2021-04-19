@@ -159,8 +159,7 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
     for i in range(num_portfolios):
         if i % 100 == 0:
             print("{} out of {}\n".format(i, num_portfolios), end='')
-        portfolio = Portfolio(instruments=instruments, returns_merged=returns_merged,
-                              tickers=tickers, risk_free=risk_free)
+        portfolio = Portfolio(instruments, returns_merged, tickers, risk_free)
 
         # weights
         portfolio.initialize_weights()
