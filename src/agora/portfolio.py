@@ -30,7 +30,8 @@ class Portfolio():
         self.statistics = {}
         self.covariance_matrix = []
 
-        return
+        self.initialize_weights()
+        self.calculate_statistics()
 
     def initialize_weights(self):
         '''

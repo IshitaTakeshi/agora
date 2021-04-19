@@ -162,11 +162,9 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
         portfolio = Portfolio(instruments, returns_merged, tickers, risk_free)
 
         # weights
-        portfolio.initialize_weights()
         w_stocks = sum([w[i] for i in portfolio.weights if i in stocks_idx])
 
         # return, std, sharpe ratio
-        portfolio.calculate_statistics()
         portfolio_statistics = portfolio.statistics
         R_P = portfolio_statistics['portfolio_annual_return']
         STP_P = portfolio_statistics['portfolio_annual_std']
