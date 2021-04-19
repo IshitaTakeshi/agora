@@ -13,6 +13,14 @@ tickers_data = pd.DataFrame(pd.read_csv('data/tickers.csv'))
 stocks_tickers = list(tickers_data.dropna(subset=['IPOyear'])['Symbol'])
 
 
+def print_portfolio_weights(tickers, opt_weights, min_weights):
+    weights_dict = {"Max SR Allocation Weights": opt_weights *
+                    100, 'Min σ Allocation Weights': min_weights * 100}
+    weights_df = pd.DataFrame(weights_dict)
+    weights_df.index = tickers
+    utils.display(weights_df)
+
+
 def print_portfolio_performance(title, return_, stddev, sharpe):
     annual_return = round(return_ * 100, 3)
     stddev = round(stddev, 3)
@@ -190,13 +198,7 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
     print_portfolio_performance("Min Standard Deviation",
                                 min_ret, min_std, min_sr)
 
-    # [3] weight allocation for both efficient portfolios
-    weights_dict = {"Max SR Allocation Weights": opt_weights *
-                    100, 'Min σ Allocation Weights': min_weights * 100}
-    weights_df = pd.DataFrame(weights_dict)
-    weights_df.index = tickers
-    if printing:
-        utils.display(weights_df)
+    print_portfolio_weights(tickers, opt_weights, min_weights)
 
     # 5 - Plot the portfolios along with the 2 efficient portfolios.
     title = "{}_portfolio_simulation".format(num_portfolios)
