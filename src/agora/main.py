@@ -94,8 +94,6 @@ def get_tickers_statistics(tickers, start, end):
         [*] end         : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
 
-    printing = False
-
     # 2 - Retrieve Data & Calculate Descriptive statistics for each ticker:
     instruments = []
     expected_annual_return_list = []
@@ -146,8 +144,6 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
         [*] start       : Date formatted as `dd/mm/yyyy`, since when data is going to be retrieved.
         [*] end         : Date formatted as `dd/mm/yyyy`, until when data is going to be retrieved.
     '''
-    # 1 - check arguments
-    printing = True
 
     # 2 - Get the instrument list along with their calculated descriptive statistics
     instruments, descriptive_df = get_tickers_statistics(tickers, start, end)
