@@ -13,6 +13,22 @@ tickers_data = pd.DataFrame(pd.read_csv('data/tickers.csv'))
 stocks_tickers = list(tickers_data.dropna(subset=['IPOyear'])['Symbol'])
 
 
+def print_portfolio_performance(title, return_, stddev, sharpe):
+    annual_return = round(return_ * 100, 3)
+    stddev = round(stddev, 3)
+    sharpe = round(sharpe, 3)
+
+    messages = []
+    messages.append(" " + title)
+    messages.append(" Portfolio Annual Return "
+                    "(252 days)  = {} % ".format(annual_return))
+    messages.append(" Portfolio Annual Standard Deviation  "
+                    "(252 days)  = {}  ".format(stddev))
+    messages.append(" Portfolio Annual Sharpe Ratio  "
+                    "(252 days)  = {}  ".format(sharpe))
+    utils.pprint(messages)
+
+
 def get_ticker_historical_data(ticker, start, end):
     '''
     function:
@@ -164,33 +180,15 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
     opt_idx = np.argmax(sharpe_arr)
     opt_sr, opt_ret, opt_std = sharpe_arr[opt_idx], ret_arr[opt_idx], std_arr[opt_idx]
     opt_weights = all_weights[opt_idx]
-    messages = []
-    messages.append(
-        "          * Max Sharpe Ratio optimized Portfolio *          ")
-    messages.append(" Portfolio Annual Return (252 days)  = {} % ".format(
-        round(opt_ret * 100, 3)))
-    messages.append(" Portfolio Annual Standard Deviation  (252 days)  = {}  ".format(
-        round(opt_std, 3)))
-    messages.append(
-        " Portfolio Annual Sharpe Ratio  (252 days)  = {}  ".format(round(opt_sr, 3)))
-    if printing:
-        utils.pprint(messages)
+    print_portfolio_performance("Max Sharpe Ratio",
+                                opt_ret, opt_std, opt_sr)
 
     # [2] Min Standard Deviation Ratio portfolio
     min_idx = np.argmin(std_arr)
     min_sr, min_ret, min_std = sharpe_arr[min_idx], ret_arr[min_idx], std_arr[min_idx]
     min_weights = all_weights[min_idx]
-    messages = []
-    messages.append(
-        "      * Min Standard Deviation optimized Portfolio *      ")
-    messages.append(" Portfolio Annual Return (252 days)  = {} % ".format(
-        round(min_ret * 100, 3)))
-    messages.append(" Portfolio Annual Standard Deviation  (252 days)  = {}  ".format(
-        round(min_std, 3)))
-    messages.append(
-        " Portfolio Annual Sharpe Ratio  (252 days)  = {}  ".format(round(min_sr, 3)))
-    if printing:
-        utils.pprint(messages)
+    print_portfolio_performance("Min Standard Deviation",
+                                min_ret, min_std, min_sr)
 
     # [3] weight allocation for both efficient portfolios
     weights_dict = {"Max SR Allocation Weights": opt_weights *
