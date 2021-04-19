@@ -105,15 +105,15 @@ class Portfolio():
 
     def track_progress(self, printing, message_optimization, risky):
 
-        portfolio_statistics = self.statistics
+        statistics = self.statistics
 
         weights = self.weights
         weights_df = pd.DataFrame(weights, columns=['Allocation Weights'])
         weights_df.index = self.tickers
 
-        annual_return = portfolio_statistics['portfolio_annual_return']
-        annual_std = portfolio_statistics['portfolio_annual_std']
-        annual_sr = portfolio_statistics['portfolio_annual_sr']
+        annual_return = statistics['portfolio_annual_return']
+        annual_std = statistics['portfolio_annual_std']
+        annual_sr = statistics['portfolio_annual_sr']
 
         if not risky:
             annual_return = annual_return * 0.9 + self.risk_free * 0.1
@@ -142,10 +142,10 @@ class Portfolio():
 
     def portfolio_annualised_performance(self, weights, mean_returns, cov_matrix):
 
-        portfolio_return = np.sum(mean_returns * weights) * 252
-        portfolio_std = np.sqrt(
+        return_ = np.sum(mean_returns * weights) * 252
+        std = np.sqrt(
             np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
-        sharpe_ratio = (portfolio_return - self.risk_free) / portfolio_std
+        sharpe_ratio = (return_ - self.risk_free) / std
         return -sharpe_ratio
 
     def efficient_sharpe_ratio(self, mean_returns, cov_matrix, target):
