@@ -165,7 +165,7 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
         portfolio_statistics = portfolio.statistics
         R_P = portfolio.annual_return
         STP_P = portfolio.annual_std
-        SR_P = portfolio_statistics['portfolio_annual_sr']
+        SR_P = portfolio.annual_sharpe_ratio
 
         # append results
         all_weights.append(portfolio.weights)

@@ -77,7 +77,7 @@ class Portfolio():
             np.dot(self.weights.T, np.dot(covariance_matrix, self.weights))) * np.sqrt(252)
 
         # PORFTOLIO SHARPE RATIO
-        statistics["portfolio_annual_sr"] = (
+        self.annual_sharpe_ratio = (
             self.annual_return - self.risk_free) / self.annual_std
 
         self.statistics = statistics
@@ -113,7 +113,7 @@ class Portfolio():
 
         annual_return = self.annual_return
         annual_std = self.annual_std
-        annual_sr = statistics['portfolio_annual_sr']
+        annual_sr = self.annual_sharpe_ratio
 
         if not risky:
             annual_return = annual_return * 0.9 + self.risk_free * 0.1
