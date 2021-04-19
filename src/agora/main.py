@@ -77,7 +77,7 @@ def get_tickers_statistics(tickers, start, end):
     expected_annual_return_list = []
     annual_std_list = []
     for ticker in tickers:
-        instrument = get_ticker_historical_data(ticker=ticker, start=start, end=end)
+        instrument = get_ticker_historical_data(ticker, start, end)
         instruments.append(instrument)
         expected_annual_return = instrument.expected_annual_return
         expected_annual_return_list.append(expected_annual_return * 100)
