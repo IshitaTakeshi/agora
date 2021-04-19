@@ -73,12 +73,12 @@ class Portfolio():
         # PORFTOLIO STANDARD DEVIATION
         STD_I_list = [instrument.annual_std for instrument in self.instruments]
         covariance_matrix = self.calculate_covariance_matrix()
-        statistics["portfolio_annual_std"] = np.sqrt(
+        self.annual_std = np.sqrt(
             np.dot(self.weights.T, np.dot(covariance_matrix, self.weights))) * np.sqrt(252)
 
         # PORFTOLIO SHARPE RATIO
         statistics["portfolio_annual_sr"] = (
-            self.annual_return - self.risk_free) / statistics["portfolio_annual_std"]
+            self.annual_return - self.risk_free) / self.annual_std
 
         self.statistics = statistics
 
@@ -112,7 +112,7 @@ class Portfolio():
         weights_df.index = self.tickers
 
         annual_return = self.annual_return
-        annual_std = statistics['portfolio_annual_std']
+        annual_std = self.annual_std
         annual_sr = statistics['portfolio_annual_sr']
 
         if not risky:
