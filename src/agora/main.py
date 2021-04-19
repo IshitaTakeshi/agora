@@ -152,13 +152,9 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
     risk_free = utils.risk_free_return(instruments[0].start, instruments[0].end)
     returns_merged = utils.merge_instrument_returns(instruments, tickers)
 
-    print("instruments = ", instruments)
-
     # 3 - Portfolio simulation
     all_weights, ret_arr, std_arr, sharpe_arr = [], [], [], []
     for i in range(num_portfolios):
-        if i % 100 == 0:
-            print("{} out of {}\n".format(i, num_portfolios), end='')
         portfolio = Portfolio(instruments, returns_merged, tickers, risk_free)
 
         all_weights.append(portfolio.weights)
