@@ -161,17 +161,10 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
             print("{} out of {}\n".format(i, num_portfolios), end='')
         portfolio = Portfolio(instruments, returns_merged, tickers, risk_free)
 
-        # return, std, sharpe ratio
-        portfolio_statistics = portfolio.statistics
-        R_P = portfolio.annual_return
-        STP_P = portfolio.annual_std
-        SR_P = portfolio.annual_sharpe_ratio
-
-        # append results
         all_weights.append(portfolio.weights)
-        ret_arr.append(R_P)
-        std_arr.append(STP_P)
-        sharpe_arr.append(SR_P)
+        ret_arr.append(portfolio.annual_return)
+        std_arr.append(portfolio.annual_std)
+        sharpe_arr.append(portfolio.annual_sharpe_ratio)
 
     # 4 - Calculate 2 most efficient portfolios.
     # [1] Max Sharpe Ratio Portfolio
