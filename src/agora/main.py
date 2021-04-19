@@ -147,8 +147,6 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
 
     # 2 - Get the instrument list along with their calculated descriptive statistics
     instruments, descriptive_df = get_tickers_statistics(tickers, start, end)
-    stocks_idx = [idx for idx in range(
-        len(tickers)) if tickers[idx] in stocks_tickers]
     risk_free = utils.risk_free_return(instruments[0].start, instruments[0].end)
     returns_merged = utils.merge_instrument_returns(instruments, tickers)
 
