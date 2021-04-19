@@ -163,7 +163,7 @@ def portfolio_optimization(num_portfolios, tickers, start, end):
 
         # return, std, sharpe ratio
         portfolio_statistics = portfolio.statistics
-        R_P = portfolio_statistics['portfolio_annual_return']
+        R_P = portfolio.annual_return
         STP_P = portfolio_statistics['portfolio_annual_std']
         SR_P = portfolio_statistics['portfolio_annual_sr']
 

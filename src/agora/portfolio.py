@@ -68,7 +68,7 @@ class Portfolio():
         #################################################################################
         # PORTFOLIO RETURN
         R_I_list = [instrument.expected_annual_return for instrument in self.instruments]
-        statistics["portfolio_annual_return"] = np.sum(R_I_list * self.weights)
+        self.annual_return = np.sum(R_I_list * self.weights)
 
         # PORFTOLIO STANDARD DEVIATION
         STD_I_list = [instrument.annual_std for instrument in self.instruments]
@@ -78,7 +78,7 @@ class Portfolio():
 
         # PORFTOLIO SHARPE RATIO
         statistics["portfolio_annual_sr"] = (
-            statistics["portfolio_annual_return"] - self.risk_free) / statistics["portfolio_annual_std"]
+            self.annual_return - self.risk_free) / statistics["portfolio_annual_std"]
 
         self.statistics = statistics
 
@@ -111,7 +111,7 @@ class Portfolio():
         weights_df = pd.DataFrame(weights, columns=['Allocation Weights'])
         weights_df.index = self.tickers
 
-        annual_return = statistics['portfolio_annual_return']
+        annual_return = self.annual_return
         annual_std = statistics['portfolio_annual_std']
         annual_sr = statistics['portfolio_annual_sr']
 
